@@ -118,6 +118,11 @@ resource "aws_eks_addon" "ebs-csi" {
   }
 }
 
+provider "kubernetes" {
+  config_path    = "~/.kube/config"
+  config_context = "fast-food-context"
+}
+
 resource "kubernetes_namespace" "fast-food" {
   metadata {
     annotations = {
