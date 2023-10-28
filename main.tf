@@ -117,3 +117,37 @@ resource "aws_eks_addon" "ebs-csi" {
     "terraform" = "true"
   }
 }
+
+
+
+resource "kubernetes_namespace" "fast-food" {
+  metadata {
+    annotations = {
+      name = "fast-food-annotation"
+    }
+
+    labels = {
+      tech-challenge = "fast-food"
+    }
+
+    name = "fast-food-namespace"
+  }
+}
+
+
+# Defina o recurso do Service "fast-food-service"
+
+# Defina os recursos de métricas
+resource "kubernetes_service_account" "metrics_server_service_account" {
+  metadata {
+    name = "metrics-server"
+    namespace = "kube-system"
+    labels = {
+      k8s-app = "metrics-server"
+    }
+  }
+}
+
+
+
+
