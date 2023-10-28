@@ -117,3 +117,123 @@ resource "aws_eks_addon" "ebs-csi" {
     "terraform" = "true"
   }
 }
+
+provider "kubernetes" {
+  config_context_cluster = "module.eks.kubeconfig"
+}
+
+# Defina o recurso do namespace "fast-food"
+resource "kubernetes_namespace" "fast_food" {
+  metadata {
+    name = "fast-food"
+  }
+}
+
+# Defina o recurso do Service "fast-food-service"
+resource "kubernetes_service" "fast_food_service" {
+  metadata {
+    name = "fast-food-service"
+    labels = {
+      app = "fast-food-pod"
+    }
+  }
+
+  spec {
+    type = "LoadBalancer"
+
+    selector = {
+      app = "fast-food-pod"
+    }
+
+    port {
+      port        = 80
+      target_port = 8080
+      protocol    = "TCP"
+    }
+  }
+}
+
+# Defina os recursos de métricas
+resource "kubernetes_service_account" "metrics_server_service_account" {
+  metadata {
+    name = "metrics-server"
+    namespace = "kube-system"
+    labels = {
+      k8s-app = "metrics-server"
+    }
+  }
+}
+
+resource "kubernetes_cluster_role" "aggregated_metrics_reader" {
+  metadata {
+    name = "system:aggregated-metrics-reader"
+    labels = {
+      k8s-app = "metrics-server"
+      rbac.authorization.k8s.io/aggregate-to-admin = "true"
+      rbac.authorization.k8s.io/aggregate-to-edit  = "true"
+      rbac.authorization.k8s.io/aggregate-to-view  = "true"
+    }
+  }
+
+  rule {
+    api_groups = ["metrics.k8s.io"]
+    resources  = ["pods", "nodes"]
+    verbs      = ["get", "list", "watch"]
+  }
+}
+
+resource "kubernetes_deployment" "fast_food_deployment" {
+  metadata {
+    name      = "fast-food-pod"
+    namespace = "fast-food"
+  }
+
+  spec {
+    replicas = 2
+
+    selector {
+      match_labels = {
+        app = "fast-food-pod"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "fast-food-pod"
+        }
+      }
+
+      spec {
+        container {
+          name  = "fastfood"
+          image = "653185900972.dkr.ecr.us-east-1.amazonaws.com/tech-challenge:latest"
+          image_pull_secret = ["ecr-registry"]
+
+
+          port {
+            container_port = 8080
+          }
+
+          liveness_probe {
+            http_get {
+              path = "/actuator/health"
+              port = 8080
+            }
+            initial_delay_seconds = 10
+            period_seconds       = 30
+          }
+
+          env_from {
+            secret_ref {
+              name = "fastfood-security"
+            }
+            config_map_ref {
+              name = "db-secret-credentials"
+            }
+          }
+        }
+      }
+    }
+  }
+}
