@@ -119,6 +119,27 @@ resource "aws_eks_addon" "ebs-csi" {
 }
 
 
+data "aws_eks_cluster" "default" {
+  name = module.eks.cluster_name
+}
+
+data "aws_eks_cluster_auth" "default" {
+  name = module.eks.cluster_name
+}
+
+resource "kubernetes_namespace" "test" {
+  metadata {
+    name = "test"
+  }
+}
+
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.default.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.default.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.default.token
+}
+
 
 resource "kubernetes_namespace" "fast-food" {
   metadata {
@@ -135,18 +156,7 @@ resource "kubernetes_namespace" "fast-food" {
 }
 
 
-# Defina o recurso do Service "fast-food-service"
 
-# Defina os recursos de métricas
-resource "kubernetes_service_account" "metrics_server_service_account" {
-  metadata {
-    name = "metrics-server"
-    namespace = "kube-system"
-    labels = {
-      k8s-app = "metrics-server"
-    }
-  }
-}
 
 
 
