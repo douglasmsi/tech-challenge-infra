@@ -119,7 +119,7 @@ resource "aws_eks_addon" "ebs-csi" {
 }
 
 provider "kubernetes" {
-  config_context_cluster = "module.eks.kubeconfig"
+  config_context_cluster = "module.eks.cluster_name"
 }
 
 # Defina o recurso do namespace "fast-food"
