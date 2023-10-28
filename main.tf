@@ -15,7 +15,8 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  cluster_name = "tech-challenge-eks-${random_string.suffix.result}"
+ # cluster_name = "tech-challenge-eks-${random_string.suffix.result}"
+  cluster_name = "tech-challenge-eks"
 }
 
 resource "random_string" "suffix" {
@@ -55,7 +56,7 @@ module "eks" {
   version = "19.15.3"
 
   cluster_name    = local.cluster_name
-  cluster_version = "1.27"
+  cluster_version = "1.28"
 
   vpc_id                         = module.vpc.vpc_id
   subnet_ids                     = module.vpc.private_subnets
