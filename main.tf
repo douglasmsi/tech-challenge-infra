@@ -118,16 +118,20 @@ resource "aws_eks_addon" "ebs-csi" {
   }
 }
 
-provider "kubernetes" {
-  config_context_cluster = "module.eks.cluster_name"
-}
-
-# Defina o recurso do namespace "fast-food"
-resource "kubernetes_namespace" "fast_food" {
+resource "kubernetes_namespace" "fast-food" {
   metadata {
-    name = "fast-food"
+    annotations = {
+      name = "fast-food-annotation"
+    }
+
+    labels = {
+      tech-challenge = "fast-food"
+    }
+
+    name = "fast-food-namespace"
   }
 }
+
 
 # Defina o recurso do Service "fast-food-service"
 
