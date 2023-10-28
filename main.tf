@@ -141,17 +141,17 @@ provider "kubernetes" {
 }
 
 
-resource "kubernetes_namespace" "fast-food" {
+resource "kubernetes_namespace" "tech-challenge" {
   metadata {
     annotations = {
-      name = "fast-food-annotation"
+      name = "tech-challenge-annotation"
     }
 
     labels = {
-      tech-challenge = "fast-food"
+      tech-challenge = "tech-challenge"
     }
 
-    name = "fast-food-namespace"
+    name = "tech-challenge-namespace"
   }
 }
 
