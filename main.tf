@@ -119,7 +119,7 @@ resource "aws_eks_addon" "ebs-csi" {
 }
 
 
-data "aws_eks_cluster" {
+data "aws_eks_cluster" "default" {
   name = module.eks.cluster_name
 }
 
