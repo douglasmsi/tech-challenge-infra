@@ -119,20 +119,13 @@ resource "aws_eks_addon" "ebs-csi" {
 }
 
 
-data "aws_eks_cluster" "default" {
+data "aws_eks_cluster" {
   name = module.eks.cluster_name
 }
 
 data "aws_eks_cluster_auth" "default" {
   name = module.eks.cluster_name
 }
-
-resource "kubernetes_namespace" "test" {
-  metadata {
-    name = "test"
-  }
-}
-
 
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.default.endpoint
@@ -141,7 +134,7 @@ provider "kubernetes" {
 }
 
 
-resource "kubernetes_namespace" "tech-challenge" {
+resource "kubernetes_namespace" "tech-challenge-namespace" {
   metadata {
     annotations = {
       name = "tech-challenge-annotation"
