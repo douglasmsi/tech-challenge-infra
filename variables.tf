@@ -36,18 +36,18 @@ variable name {
 variable "worker_groups" {
   type = list(object({
     instance_type        = string
-    asg_desired_capacity = string
-    asg_min_size         = string
-    asg_max_size         = string
+    asg_desired_capacity = number
+    asg_min_size         = number
+    asg_max_size         = number
     key_name             = string
   }))
 
   default = [
     {
       instance_type        = "m4.xlarge"
-      asg_desired_capacity = "5"
-      asg_min_size         = "5"
-      asg_max_size         = "7"
+      asg_desired_capacity = 5
+      asg_min_size         = 5
+      asg_max_size         = 7
       key_name             = "subhakarkotta"
     }
   ]
