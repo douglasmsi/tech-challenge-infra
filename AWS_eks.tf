@@ -4,6 +4,20 @@ provider "aws" {
   region = var.region
 }
 
+resource "kubernetes_namespace" "tech-challenge-namespace" {
+  metadata {
+    annotations = {
+      name = "tech-challenge-annotation"
+    }
+
+    labels = {
+      tech-challenge = "tech-challenge"
+    }
+
+    name = "tech-challenge-namespace"
+  }
+}
+
 module "cluster" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.3"
