@@ -98,3 +98,10 @@ variable "rds_parameter_group_family" {
 variable "enable_dashboard" {
   default = true
 }
+
+variable "parameters" {
+  description = "A list of parameter settings to apply to the DB instance."
+  type        = list(map(string))
+
+  default = []
+}
