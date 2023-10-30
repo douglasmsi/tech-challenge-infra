@@ -25,5 +25,5 @@ resource "kubernetes_cluster_role_binding" "super-user" {
     namespace = "kube-system"
   }
 
-  depends_on = ["kubernetes_service_account.super-user"]
+  depends_on = [kubernetes_service_account.super-user]
 }
