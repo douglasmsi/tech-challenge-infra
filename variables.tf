@@ -18,6 +18,11 @@ variable public_subnets {
   default = ["172.16.0.0/20", "172.16.16.0/20"]
 }
 
+variable private_subnets {
+  type    = list(string)
+  default = ["10.0.1.0/24", "10.0.2.0/24"]
+}
+
 variable tags {
   type = map(string)
 
@@ -28,6 +33,10 @@ variable tags {
 
 variable name {
   default = "tech-challenge"
+}
+
+variable cluster_name {
+  default = "tech-challenge-eks"
 }
 
 
