@@ -1,19 +1,15 @@
 // Configure AWS EKS Cluster
 
 module "cluster" {
-  version      = "19.15.3"
-  source       = "terraform-aws-modules/eks/aws"
-  cluster_name = var.name
-  subnets      = module.vpc.public_subnets
+  source  = "terraform-aws-modules/eks/aws"
+  version = "19.15.3"
 
-  tags = var.tags
+  cluster_name    = var.name
+  cluster_version = "1.28"
 
-  vpc_id                 = module.vpc.vpc_id
-  cluster_delete_timeout = "60m"
-  cluster_create_timeout = "60m"
-  manage_aws_auth        = "true"
-  write_kubeconfig       = "true"
-  config_output_path     = "./"
+  vpc_id                         = module.vpc.vpc_id
+  subnet_ids                     = module.vpc.private_subnets
+  cluster_endpoint_public_access = true
 
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
@@ -26,9 +22,9 @@ module "cluster" {
 
       instance_types = ["t3.small"]
 
-      min_size     = 2
-      max_size     = 5
-      desired_size = 3
+      min_size     = 1
+      max_size     = 4
+      desired_size = 2
     }
 
     two = {
@@ -36,10 +32,9 @@ module "cluster" {
 
       instance_types = ["t3.small"]
 
-      min_size     = 2
-      max_size     = 5
-      desired_size = 3
+      min_size     = 1
+      max_size     = 4
+      desired_size = 2
     }
   }
-
 }
