@@ -1,6 +1,6 @@
 ###################CLUSTER VARIABLES##################
 variable region {
-  default = "us-east-2"
+  default = "us-east-1"
 }
 
 
@@ -10,7 +10,7 @@ variable vpc_subnet {
 
 variable azs {
   type    = list(string)
-  default = ["us-east-2a", "us-east-2b"]
+  default = ["us-east-1a", "us-east-1b"]
 }
 
 variable public_subnets {

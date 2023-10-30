@@ -1,5 +1,9 @@
 // Configure AWS EKS Cluster
 
+provider "aws" {
+  region = var.region
+}
+
 module "cluster" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.3"
