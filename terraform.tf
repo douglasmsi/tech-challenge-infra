@@ -13,6 +13,7 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.7.0"
+      region  = "us-east-2"
     }
 
     random = {
@@ -23,6 +24,19 @@ terraform {
     tls = {
       source  = "hashicorp/tls"
       version = "~> 4.0.4"
+    }
+
+    local = {
+      source  = "hashicorp/local"
+      version = "~> 2.1.0"
+    }
+
+    null = {
+      version = "~> 2.1"
+    }
+
+    template = {
+      version = "~> 2.1"
     }
 
     cloudinit = {
