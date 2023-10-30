@@ -3,9 +3,6 @@ variable region {
   default = "us-east-2"
 }
 
-variable aws_access_key_id {}
-
-variable aws_secret_access_key {}
 
 variable vpc_subnet {
   default = "172.16.0.0/16"
@@ -31,26 +28,6 @@ variable tags {
 
 variable name {
   default = "tech-challenge"
-}
-
-variable "worker_groups" {
-  type = list(object({
-    instance_type        = string
-    asg_desired_capacity = number
-    asg_min_size         = number
-    asg_max_size         = number
-    key_name             = string
-  }))
-
-  default = [
-    {
-      instance_type        = "m4.xlarge"
-      asg_desired_capacity = 5
-      asg_min_size         = 5
-      asg_max_size         = 7
-      key_name             = "subhakarkotta"
-    }
-  ]
 }
 
 
@@ -97,11 +74,4 @@ variable "rds_parameter_group_family" {
 
 variable "enable_dashboard" {
   default = true
-}
-
-variable "parameters" {
-  description = "A list of parameter settings to apply to the DB instance."
-  type        = list(map(string))
-
-  default = []
 }
