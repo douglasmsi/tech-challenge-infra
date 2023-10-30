@@ -119,29 +119,22 @@ resource "aws_eks_addon" "ebs-csi" {
 }
 
 
-data "aws_eks_cluster" "default" {
-  name = module.eks.cluster_name
+data "aws_eks_cluster" "cluster" {
+  name = module.eks.cluster_id
 }
 
-data "aws_eks_cluster_auth" "default" {
-  name = module.eks.cluster_name
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.eks.cluster_id
 }
-
-resource "kubernetes_namespace" "test" {
-  metadata {
-    name = "test"
-  }
-}
-
 
 provider "kubernetes" {
-  host                   = data.aws_eks_cluster.default.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.default.certificate_authority[0].data)
-  token                  = data.aws_eks_cluster_auth.default.token
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
 }
 
 
-resource "kubernetes_namespace" "tech-challenge" {
+resource "kubernetes_namespace" "tech-challenge-namespace" {
   metadata {
     annotations = {
       name = "tech-challenge-annotation"
