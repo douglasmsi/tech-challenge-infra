@@ -35,7 +35,6 @@ resource "aws_db_instance" "tech-challenge-database" {
   port                = 5432
   publicly_accessible = true
   skip_final_snapshot = true
-  subnet_ids = module.vpc.public_subnets
   vpc_security_group_ids = [aws_security_group.sec_grp_rds.id]
   tags = {
     Name = "tech-challenge-rds"
