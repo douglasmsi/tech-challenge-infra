@@ -1,7 +1,7 @@
 // Configure AWS VPC, Subnets, and Routes
 
 module "vpc" {
-  version = "v2.7.0"
+  version = "5.0.0"
   source  = "terraform-aws-modules/vpc/aws"
 
   name = var.name
