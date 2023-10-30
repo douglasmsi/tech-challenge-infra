@@ -8,11 +8,12 @@ module "vpc" {
 
   name = "tech-challenge-vpc"
 
-  cidr = var.vpc_subnet
   azs            = var.azs
 
   private_subnets =var.private_subnets
   public_subnets = var.public_subnets
+
+  cidr = "10.0.0.0/20"
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
