@@ -12,17 +12,17 @@ variable vpc_subnet {
 }
 
 variable azs {
-  type    = "list"
+  type    = list(string)
   default = ["us-east-2a", "us-east-2b"]
 }
 
 variable public_subnets {
-  type    = "list"
+  type    = list(string)
   default = ["172.16.0.0/20", "172.16.16.0/20"]
 }
 
 variable tags {
-  type = "map"
+  type = map(string)
 
   default = {
     "Environment" = "Development"
@@ -33,17 +33,26 @@ variable name {
   default = "tech-challenge"
 }
 
-variable worker_groups {
-  type = "list"
+variable "worker_groups" {
+  type = list(object({
+    instance_type        = string
+    asg_desired_capacity = string
+    asg_min_size         = string
+    asg_max_size         = string
+    key_name             = string
+  }))
 
-  default = [{
-    "instance_type"        = "m4.xlarge"
-    "asg_desired_capacity" = "5"
-    "asg_min_size"         = "5"
-    "asg_max_size"         = "7"
-    "key_name"             = "subhakarkotta"
-  }]
+  default = [
+    {
+      instance_type        = "m4.xlarge"
+      asg_desired_capacity = "5"
+      asg_min_size         = "5"
+      asg_max_size         = "7"
+      key_name             = "subhakarkotta"
+    }
+  ]
 }
+
 
 ###################RDS VARIABLES##################
 variable "rds_name" {
