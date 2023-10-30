@@ -21,7 +21,7 @@ resource "aws_security_group_rule" "allow-workers-nodes-communications" {
   from_port                = 5432
   protocol                 = "tcp"
   security_group_id        = aws_security_group.sec_grp_rds.id
-  source_security_group_id = module.cluster.worker_security_group_id
+  source_security_group_id = module.cluster.cluster_security_group_id
   to_port                  = 5432
   type                     = "ingress"
 }
