@@ -122,35 +122,35 @@ resource "aws_eks_addon" "ebs-csi" {
   }
 }
 
-data "aws_eks_cluster" "default" {
-  name = var.cluster_name
+data "aws_eks_cluster" "tech-challenge" {
+  name = var.name
 }
 
-data "aws_eks_cluster_auth" "default" {
-  name = var.cluster_name
+data "aws_eks_cluster_auth" "tech-challenge" {
+  name = var.name
 }
 
 provider "kubernetes" {
-  host                   = data.aws_eks_cluster.default.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.default.certificate_authority[0].data)
-  token                  = data.aws_eks_cluster_auth.default.token
+  host                   = data.aws_eks_cluster.tech-challenge.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.tech-challenge.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.tech-challenge.token
 }
 
 provider "helm" {
   kubernetes {
-    host                   = data.aws_eks_cluster.default.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.default.certificate_authority[0].data)
-    token                  = data.aws_eks_cluster_auth.default.token
+    host                   = data.aws_eks_cluster.tech-challenge.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.tech-challenge.certificate_authority[0].data)
+    token                  = data.aws_eks_cluster_auth.tech-challenge.token
   }
 }
 
 resource "local_file" "kubeconfig" {
   sensitive_content = templatefile("${path.module}/kubeconfig.tpl", {
-    cluster_name = var.cluster_name,
-    clusterca    = data.aws_eks_cluster.default.certificate_authority[0].data,
-    endpoint     = data.aws_eks_cluster.default.endpoint,
+    cluster_name = var.name,
+    clusterca    = data.aws_eks_cluster.tech-challenge.certificate_authority[0].data,
+    endpoint     = data.aws_eks_cluster.tech-challenge.endpoint,
   })
-  filename = "./kubeconfig-${var.cluster_name}"
+  filename = "./kubeconfig-${var.name}"
 }
 
 resource "kubernetes_namespace" "test" {
