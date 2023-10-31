@@ -24,12 +24,6 @@ resource "aws_security_group" "sec_grp_rds" {
   }
 }
 
-resource "aws_subnet" "rds_subnet" {
-  vpc_id            = module.vpc.vpc_id
-  cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-east-1a"
-}
-
 resource "aws_db_instance" "tech-challenge-database" {
   allocated_storage   = 20
   storage_type        = "gp2"
