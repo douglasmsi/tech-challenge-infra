@@ -20,3 +20,7 @@ output "cluster_name" {
   description = "Kubernetes Cluster Name"
   value       = module.eks.cluster_name
 }
+
+output "private_subnet_ids" {
+  value = module.vpc.private_subnets
+}
