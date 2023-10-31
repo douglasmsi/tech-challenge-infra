@@ -122,49 +122,27 @@ resource "aws_eks_addon" "ebs-csi" {
   }
 }
 
-
+data "aws_eks_cluster" "cluster" {
+  name = module.eks.cluster_name
+}
 
 data "aws_eks_cluster_auth" "tech-challenge" {
   name = var.name
 }
 
 provider "kubernetes" {
-  host                   = module.eks.cluster_endpoint
-  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.tech-challenge.token
 }
 
-provider "helm" {
-  kubernetes {
-    host                   = module.eks.cluster_endpoint
-    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-    token                  = data.aws_eks_cluster_auth.tech-challenge.token
-  }
-}
 
-resource "local_file" "kubeconfig" {
-
-  filename = "./kubeconfig-${var.name}"
-}
 
 resource "kubernetes_namespace" "tech-challenge" {
   metadata {
     name = "tech-challenge"
   }
 }
-
-resource "helm_release" "nginx_ingress" {
-  namespace = kubernetes_namespace.tech-challenge.metadata.0.name
-  wait      = true
-  timeout   = 600
-
-  name = "ingress-nginx"
-
-  repository = "https://kubernetes.github.io/ingress-nginx"
-  chart      = "ingress-nginx"
-  version    = "v3.30.0"
-}
-
 
 
 
