@@ -145,9 +145,9 @@ provider "kubernetes" {
 
 
 
-resource "kubernetes_namespace" "tech-challenge" {
+resource "kubernetes_namespace" "tech-challenge-namespaces" {
   metadata {
-    name = "tech-challenge"
+    name = "tech-challenge-namespaces"
   }
 }
 
