@@ -43,8 +43,8 @@ resource "aws_db_instance" "tech-challenge-database" {
   engine_version      = "14"
   instance_class      = "db.t3.micro"
   db_name             = "techchallengedb" #kubernetes_config_map.tech-challenge-config-map.data.postgres-database-name
-  username            = "tech-challenge-user" #kubernetes_config_map.tech-challenge-config-map.data.postgres-user-username
-  password            = "tech-challenge-password" #kubernetes_config_map.tech-challenge-config-map.data.postgres-user-password
+  username            = "techchallengeuser" #kubernetes_config_map.tech-challenge-config-map.data.postgres-user-username
+  password            = "techchallengepassword" #kubernetes_config_map.tech-challenge-config-map.data.postgres-user-password
   port                = 5432
   publicly_accessible = true
   skip_final_snapshot = true
