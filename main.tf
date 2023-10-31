@@ -151,7 +151,6 @@ resource "kubernetes_namespace" "tech-challenge" {
   metadata {
     name = "tech-challenge"
   }
-  name = "tech-challenge"
 }
 
 resource "helm_release" "nginx_ingress" {
