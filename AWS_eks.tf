@@ -1,8 +1,6 @@
 // Configure AWS EKS Cluster
 
-provider "aws" {
-  region = var.region
-}
+
 
 locals {
   cluster_name = "tech-challenge-eks"
