@@ -10,6 +10,7 @@ resource "kubernetes_config_map" "tech-challenge-config-map" {
     postgres-database-name = "techchallengedb"
     postgres-user-username = "techchallengeuser"
     postgres-user-password = "techchallengepassword"
+    postgres-port          = "5432"
   }
 
 
