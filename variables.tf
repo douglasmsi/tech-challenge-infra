@@ -9,8 +9,7 @@ variable vpc_subnet {
 }
 
 variable azs {
-  type    = list(string)
-  default = ["us-east-1a"]
+  default = "us-east-1a"
 }
 
 variable public_subnets {
