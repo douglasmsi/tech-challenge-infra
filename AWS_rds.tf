@@ -19,7 +19,9 @@ resource "aws_security_group" "sec_grp_rds" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = var.tags
+  tags = {
+    Name = "tech-challenge-sg-rds"
+  }
 }
 
 resource "aws_subnet" "rds_subnet" {
@@ -35,9 +37,9 @@ resource "aws_db_instance" "tech-challenge-database" {
   engine              = "postgres"
   engine_version      = "14"
   instance_class      = "db.t3.micro"
-  db_name             = kubernetes_config_map.tech-challenge-config-map.data.postgres-database-name
-  username            = kubernetes_config_map.tech-challenge-config-map.data.postgres-user-username
-  password            = kubernetes_config_map.tech-challenge-config-map.data.postgres-user-password
+  db_name             = "tech-challenge-app-database" #kubernetes_config_map.tech-challenge-config-map.data.postgres-database-name
+  username            = "tech-challenge-user" #kubernetes_config_map.tech-challenge-config-map.data.postgres-user-username
+  password            = "tech-challenge-password" #kubernetes_config_map.tech-challenge-config-map.data.postgres-user-password
   port                = 5432
   publicly_accessible = true
   skip_final_snapshot = true
