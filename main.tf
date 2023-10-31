@@ -122,6 +122,13 @@ resource "aws_eks_addon" "ebs-csi" {
   }
 }
 
+module "eks-kubeconfig" {
+  source  = "hyperbadger/eks-kubeconfig/aws"
+  version = "2.0.0"
+  # insert the 1 required variable here
+  cluster_name = module.eks.cluster_name
+}
+
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_name
 }
