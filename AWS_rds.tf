@@ -28,7 +28,6 @@ resource "aws_security_group" "sec_grp_rds" {
 
 resource "aws_db_subnet_group" "rds_subnet_group" {
   name       = "tech-challenge-rds-subnet-group"
-  name_prefix = "${var.name}-"
   description = "RDS subnet group for tech-challenge"
   subnet_ids = [
     module.vpc.private_subnets[0],
