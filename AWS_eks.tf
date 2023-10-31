@@ -76,18 +76,3 @@ module "eks" {
   }
 }
 
-
-resource "kubernetes_namespace" "tech-challenge-namespace" {
-  metadata {
-    annotations = {
-      name = "tech-challenge-annotation"
-    }
-
-    labels = {
-      tech-challenge = "tech-challenge"
-    }
-
-    name = "tech-challenge-namespace"
-  }
-}
-
