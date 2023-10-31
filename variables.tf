@@ -10,7 +10,3 @@ variable "region" {
 variable name {
   default = "tech-challenge"
 }
-
-variable "cluster_name" {
-  type = string
-}
