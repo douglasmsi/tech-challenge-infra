@@ -11,7 +11,5 @@ resource "kubernetes_config_map" "tech-challenge-config-map" {
     postgres-user-password = "tech-challenge-password"
   }
 
-  tags = {
-    Name = "tech-challenge-config-map"
-  }
+
 }
