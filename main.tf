@@ -137,8 +137,24 @@ data "aws_eks_cluster_auth" "tech-challenge" {
   name = var.name
 }
 
+
 provider "kubernetes" {
+  #config_path = "~/.kube/config"
+
+  #token                  = data.aws_eks_cluster_auth.tech-challenge.token
+
   host                   = data.aws_eks_cluster.cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.tech-challenge.token
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+    command     = "aws"
+  }
+
+}
+
+resource "kubernetes_namespace" "tech-challenge-namespace" {
+    metadata {
+        name = "tech-challenge-namespace"
+    }
 }
