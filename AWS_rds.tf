@@ -16,12 +16,25 @@ resource "aws_security_group" "sec_grp_rds" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [
+      aws_db_subnet_group.rds_subnet_group.name,
+    ]
   }
 
   tags = {
     Name = "tech-challenge-sg-rds"
   }
+}
+
+resource "aws_db_subnet_group" "rds_subnet_group" {
+  name       = "tech-challenge-rds-subnet-group"
+  name_prefix = "${var.name}-"
+  description = "RDS subnet group for tech-challenge"
+  subnet_ids = [
+    module.vpc.private_subnets[0],
+    module.vpc.private_subnets[1],
+    module.vpc.private_subnets[2]
+  ]
 }
 
 resource "aws_db_instance" "tech-challenge-database" {
@@ -38,6 +51,7 @@ resource "aws_db_instance" "tech-challenge-database" {
   publicly_accessible = true
   skip_final_snapshot = true
   vpc_security_group_ids = [aws_security_group.sec_grp_rds.id]
+  db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
   tags = {
     Name = "tech-challenge-rds"
   }
