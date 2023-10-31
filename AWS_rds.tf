@@ -16,7 +16,7 @@ resource "aws_security_group" "sec_grp_rds" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    security_groups = [aws_security_group.sec_grp_rds.id]
+    cidr_blocks = ["10.0.0.0/24","10.0.0.0/24","10.0.0.0/24"]
 
   }
 
