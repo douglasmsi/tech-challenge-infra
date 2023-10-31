@@ -1,7 +1,6 @@
 resource "kubernetes_config_map" "tech-challenge-config-map" {
   metadata {
     name = "postgres-config-map"
-    namespace = kubernetes_namespace.tech-challenge-namespaces.metadata.0.name
   }
 
   data = {
