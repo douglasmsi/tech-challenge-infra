@@ -1,8 +1,6 @@
 // Configure AWS EKS Cluster
 
-provider "aws" {
-  region = var.region
-}
+
 
 locals {
   cluster_name = "tech-challenge-eks"
@@ -73,21 +71,6 @@ module "eks" {
       max_size     = 4
       desired_size = 2
     }
-  }
-}
-
-
-resource "kubernetes_namespace" "tech-challenge-namespace" {
-  metadata {
-    annotations = {
-      name = "tech-challenge-annotation"
-    }
-
-    labels = {
-      tech-challenge = "tech-challenge"
-    }
-
-    name = "tech-challenge-namespace"
   }
 }
 
