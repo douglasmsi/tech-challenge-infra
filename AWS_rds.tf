@@ -19,7 +19,9 @@ resource "aws_security_group" "sec_grp_rds" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = var.tags
+  tags = {
+    Name = "tech-challenge-sg-rds"
+  }
 }
 
 resource "aws_subnet" "rds_subnet" {
