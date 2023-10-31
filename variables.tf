@@ -10,17 +10,17 @@ variable vpc_subnet {
 
 variable azs {
   type    = list(string)
-  default = ["us-east-1a", "us-east-1b"]
+  default = ["us-east-1a"]
 }
 
 variable public_subnets {
   type    = list(string)
-  default = ["172.16.0.0/20", "172.16.16.0/20"]
+  default = ["172.16.0.0/20"]
 }
 
 variable private_subnets {
   type    = list(string)
-  default = ["10.0.1.0/20", "10.0.2.0/20"]
+  default = ["10.0.1.0/20"]
 }
 
 variable tags {
