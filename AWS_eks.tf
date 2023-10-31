@@ -4,7 +4,9 @@ provider "aws" {
   region = var.region
 }
 
-
+locals {
+  cluster_name = "tech-challenge-eks"
+}
 
 # https://aws.amazon.com/blogs/containers/amazon-ebs-csi-driver-is-now-generally-available-in-amazon-eks-add-ons/
 data "aws_iam_policy" "ebs_csi_policy" {
@@ -34,40 +36,12 @@ resource "aws_eks_addon" "ebs-csi" {
 }
 
 
-data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_name
-}
-
-data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_name
-}
-
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
-}
-
-
-resource "kubernetes_namespace" "tech-challenge-namespace" {
-  metadata {
-    annotations = {
-      name = "tech-challenge-annotation"
-    }
-
-    labels = {
-      tech-challenge = "tech-challenge"
-    }
-
-    name = "tech-challenge-namespace"
-  }
-}
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.3"
 
-  cluster_name    = var.cluster_name
+  cluster_name    = local.cluster_name
   cluster_version = "1.28"
 
   vpc_id                         = module.vpc.vpc_id
@@ -101,3 +75,19 @@ module "eks" {
     }
   }
 }
+
+
+resource "kubernetes_namespace" "tech-challenge-namespace" {
+  metadata {
+    annotations = {
+      name = "tech-challenge-annotation"
+    }
+
+    labels = {
+      tech-challenge = "tech-challenge"
+    }
+
+    name = "tech-challenge-namespace"
+  }
+}
+
