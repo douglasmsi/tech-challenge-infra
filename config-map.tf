@@ -6,7 +6,7 @@ resource "kubernetes_config_map" "tech-challenge-config-map" {
   }
 
   data = {
-    postgres-server        = "tech-challenge.caxagz6v59r4.us-east-1.rds.amazonaws.com"
+    postgres-server        = aws_db_instance.tech-challenge-database.address
     postgres-database-name = "techchallengedb"
     postgres-user-username = "techchallengeuser"
     postgres-user-password = "techchallengepassword"
