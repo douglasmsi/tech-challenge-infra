@@ -14,7 +14,6 @@ data "aws_availability_zones" "available" {
   }
 }
 
-
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.3"
@@ -56,7 +55,6 @@ module "eks" {
 
 }
 
-
 # https://aws.amazon.com/blogs/containers/amazon-ebs-csi-driver-is-now-generally-available-in-amazon-eks-add-ons/
 data "aws_iam_policy" "ebs_csi_policy" {
   arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
@@ -83,10 +81,6 @@ resource "aws_eks_addon" "ebs-csi" {
     "terraform" = "true"
   }
 }
-
-
-
-
 
 locals {
   //cluster_name = "tech-challenge-eks-${random_string.suffix.result}"
@@ -134,6 +128,34 @@ data "aws_eks_cluster_auth" "tech-challenge" {
   name = var.name
 }
 
+
+resource "kubernetes_namespace" "tech-challenge-namespace" {
+  metadata {
+    name = "tech-challenge-namespace"
+  }
+
+}
+
+resource "kubernetes_secret" "tech-challenge-secret" {
+  metadata {
+    name = "ecr-registry"
+  }
+
+  type = "kubernetes.io/dockerconfigjson"
+
+  data = {
+    ".dockerconfigjson" = jsonencode({
+      auths = {
+        (var.registry_server) = {
+          "username" = var.registry_username
+          "password" = var.registry_password
+          "auth"     = base64encode("${var.registry_username}:${var.registry_password}")
+        }
+      }
+    })
+  }
+
+}
 
 
 

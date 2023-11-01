@@ -1,7 +1,3 @@
-##############################################################
-# Data sources to get VPC, subnets and security group details
-##############################################################
-
 resource "aws_security_group" "sec_grp_rds" {
   name_prefix = "${var.name}-"
   vpc_id      = module.vpc.vpc_id
