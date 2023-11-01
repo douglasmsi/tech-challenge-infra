@@ -4,6 +4,7 @@
 terraform {
 
   cloud {
+    organization = "DMSec"
     workspaces {
       name = "tech-challenge-infra"
     }
@@ -33,14 +34,6 @@ terraform {
     local = {
       source  = "hashicorp/local"
       version = "~> 2.1.0"
-    }
-
-    null = {
-      version = "~> 2.1"
-    }
-
-    template = {
-      version = "~> 2.1"
     }
 
     cloudinit = {

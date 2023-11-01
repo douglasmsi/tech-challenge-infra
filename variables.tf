@@ -7,6 +7,10 @@ variable "region" {
   default     = "us-east-1"
 }
 
+variable cluster_name {
+  default = "tech-challenge-eks"
+}
+
 variable name {
   default = "tech-challenge"
 }
