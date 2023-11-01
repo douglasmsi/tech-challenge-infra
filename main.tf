@@ -28,7 +28,20 @@ module "eks" {
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
 
+    security_group_rules = [
+      {
+        type        = "ingress"
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]  # Isso permite o tráfego de qualquer lugar
+      },
+      # ... outras regras se necessário ...
+    ]
+
   }
+
+
 
   eks_managed_node_groups = {
     one = {
