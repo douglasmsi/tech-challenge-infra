@@ -3,76 +3,11 @@ provider "aws" {
   region = var.region
 }
 
-
 data "aws_availability_zones" "available" {
   filter {
     name   = "opt-in-status"
     values = ["opt-in-not-required"]
   }
-}
-
-module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "19.15.3"
-
-  cluster_name    = var.cluster_name
-  cluster_version = "1.28"
-
-  vpc_id                         = module.vpc.vpc_id
-  subnet_ids                     = module.vpc.private_subnets
-  cluster_endpoint_public_access = true
-
-  eks_managed_node_group_defaults = {
-    ami_type = "AL2_x86_64"
-
-    security_group_rules = [
-      {
-        type        = "ingress"
-        from_port   = 80
-        to_port     = 80
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-      },
-    ]
-
-  }
-
-
-
-  eks_managed_node_groups = {
-    one = {
-      name = "node-group-1"
-
-      instance_types = ["t3.small"]
-      capacity_type  = "SPOT"
-
-      min_size     = 3
-      max_size     = 5
-      desired_size = 3
-    }
-
-    two = {
-      name = "node-group-2"
-
-      instance_types = ["t3.small"]
-      capacity_type  = "SPOT"
-
-      min_size     = 3
-      max_size     = 5
-      desired_size = 3
-    }
-  }
-
-
-}
-
-locals {
-  cluster_name = var.cluster_name
-}
-
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
 }
 
 module "vpc" {
@@ -101,16 +36,74 @@ module "vpc" {
     "kubernetes.io/role/internal-elb"             = 1
   }
 
+  create_igw = true
+
+  map_public_ip_on_launch = true
+
   tags = {
     team = "tech-challenge"
   }
+}
+
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "19.15.3"
+
+  cluster_name    = var.cluster_name
+  cluster_version = "1.28"
+
+  vpc_id                         = module.vpc.vpc_id
+  subnet_ids                     = module.vpc.public_subnets
+  cluster_endpoint_public_access = true
+
+  eks_managed_node_group_defaults = {
+    ami_type = "AL2_x86_64"
+
+    security_group_rules = [
+      {
+        type        = "ingress"
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+      },
+    ]
+
+  }
+
+
+
+  eks_managed_node_groups = {
+    one = {
+      name = "node-group-1"
+
+      instance_types = ["t3.micro"]
+      capacity_type  = "SPOT"
+
+      min_size     = 3
+      max_size     = 5
+      desired_size = 3
+    }
+
+    two = {
+      name = "node-group-2"
+
+      instance_types = ["t3.micro"]
+      capacity_type  = "SPOT"
+
+      min_size     = 3
+      max_size     = 5
+      desired_size = 3
+    }
+  }
+
+
 }
 
 data "aws_eks_cluster_auth" "tech-challenge" {
   name = var.name
 }
 
-
-
-
-
+locals {
+  cluster_name = var.cluster_name
+}
