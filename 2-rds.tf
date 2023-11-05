@@ -1,4 +1,4 @@
-resource "aws_security_group" "sec_grp_rds" {
+resource "aws_security_group" "tech-challenge-sg-rds" {
   name_prefix = "${var.name}-"
   vpc_id      = module.vpc.vpc_id
 
@@ -21,7 +21,7 @@ resource "aws_security_group" "sec_grp_rds" {
   }
 }
 
-resource "aws_db_subnet_group" "rds_subnet_group" {
+resource "aws_db_subnet_group" "tech-challenge-rds-subnet-group" {
   name       = "tech-challenge-rds-subnet-group"
   description = "RDS subnet group for tech-challenge"
   subnet_ids = [
@@ -44,8 +44,8 @@ resource "aws_db_instance" "tech-challenge-database" {
   port                = 5432
   publicly_accessible = true
   skip_final_snapshot = true
-  vpc_security_group_ids = [aws_security_group.sec_grp_rds.id]
-  db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
+  vpc_security_group_ids = [aws_security_group.tech-challenge-sg-rds.id]
+  db_subnet_group_name = aws_db_subnet_group.tech-challenge-rds-subnet-group.name
   tags = {
     Name = "tech-challenge-rds"
   }
