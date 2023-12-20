@@ -29,6 +29,14 @@ output "public_subnet_ids" {
   value = module.vpc.public_subnets
 }
 
-output "postgres_host" {
-  value = aws_db_instance.tech-challenge-database.address
+output "postgres_host_client" {
+  value = aws_db_instance.tech-challenge-client-database.address
+}
+
+output "postgres_host_order" {
+  value = aws_db_instance.tech-challenge-order-database.address
+}
+
+output "postgres_host_payment" {
+  value = aws_db_instance.tech-challenge-payment-database.address
 }
