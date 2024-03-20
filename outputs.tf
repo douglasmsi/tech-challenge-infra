@@ -40,3 +40,7 @@ output "postgres_host_order" {
 output "postgres_host_payment" {
   value = aws_db_instance.tech-challenge-payment-database.address
 }
+
+output "postgres_host_hackaton" {
+  value = aws_db_instance.tech-challenge-hackaton-database.address
+}
